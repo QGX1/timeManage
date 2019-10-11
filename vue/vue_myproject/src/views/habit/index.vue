@@ -14,9 +14,9 @@
             v-bind:style="{ 
               'background-image': 'url(' + item.habit_img + ')',
               'background-repeat':'no-repeat',
-              'background-size':'cover' }"
+              'background-size':'cover' }"           
               >
-              <div class="list-box" @click="habitDetail" :data-index="index">
+              <div class="list-box"  :data-index="item"  @click="habitDetail">
                 <span class="habit_content">{{item.habit_title}}</span>
                 <span class="habit_time">{{item.habit_time}}</span>
               </div>
@@ -86,8 +86,15 @@ export default {
     },
     habitDetail(e){
       // 当前索引
-      let index = e.currentTarget.dataset.index;
-      
+      console.log(12345)
+      let habitDate = e.currentTarget.dataset;
+      console.log(habitDate)
+      this.$router.push({
+        path:'/timeHabit',
+        query:{
+          habitDate
+        }
+      })
     },
     deleteItem(e){
       // console.log(e.currentTarget.dataset.index)
@@ -118,11 +125,12 @@ export default {
     margin-left: 10px;
     margin-top: 50px;
   }  
-.el-card 
-  display: flex
-  margin-top: 4px
-  height: 100px;
+  .el-card 
+    display: flex
+    margin-top: 4px
+    height: 100px;
   .list-box
+    width 300px
     .habit_content 
       color: #fafafa;
       margin-top 10px
@@ -131,6 +139,7 @@ export default {
       font-weight: bolder;
       line-height: 1.5rem;
       letter-spacing: 2px;
+      margin-left: -240px;
     .habit_time
       color: #fafafa;
       display block
@@ -140,6 +149,7 @@ export default {
       font-weight: bolder;
       line-height: 1.5rem;
       letter-spacing: 2px;
+      margin-left: -240px;
   .delete
     width: 30px;
     height: 1.6rem;
@@ -149,7 +159,7 @@ export default {
     text-align: center;
     line-height: 1.6rem;
     position: relative;
-    top: -78px;
+    top: -69px;
     right: -304px;
 </style>
 

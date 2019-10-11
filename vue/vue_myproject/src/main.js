@@ -2,7 +2,6 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css' 
 import Mint from 'mint-ui';
 import MuseUI from 'muse-ui';
-import swal from 'sweetalert';
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'

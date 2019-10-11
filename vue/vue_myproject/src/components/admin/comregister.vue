@@ -16,8 +16,12 @@
                 </el-form-item>
                 <el-form-item  prop="user_phone" class="user_phone">
                     <el-input type="text" v-model="ruleForm.user_phone" placeholder="联系电话"  ></el-input>
+                </el-form-item>
+                <el-form-item  prop="phone_code" class="user_phone">
+                    <el-input type="text" v-model="ruleForm.phone_code" placeholder="验证码"  ></el-input>
                     <button class="get_verification"
-                        :class="{right_phone_number:rightPhoneNumber}"
+                        v-bind:disabled="dis"
+                        :class="{right_phone_number:rightPhoneNumber}"                     
                         @click.prevent="getVerifyCode"
                          >{{computedTime>0?`已发送(${computedTime})s`:'获取验证码'}}</button>
                 </el-form-item>
@@ -31,6 +35,8 @@
 </template>
 
 <script>
+import {phoneCode} from '../../api/index.js'
+import {MessageBox,Loading} from 'element-ui'
 export default {
     data() { 
         // 验证用户名
@@ -74,11 +80,20 @@ export default {
                 callback();
             }
         };
+        // 验证用户重新输入密码是否正确
         var validate_check_user_password = (rule, value, callback) => {
             if (value === '') {
                 callback(new Error('请再次输入密码'));
             } else if (value !== this.ruleForm.user_password) {
                 callback(new Error('两次输入密码不一致!'));
+            } else {
+                callback();
+            }
+        };
+        // 验证用户发送验证码
+        var validate_check_phone_code = (rule, value, callback) => {
+            if (value.length!=6) {
+                callback(new Error('验证码错误'));
             } else {
                 callback();
             }
@@ -89,7 +104,8 @@ export default {
           user_password: '',
           check_user_password: '',
           user_email:'',
-          user_phone:''
+          user_phone:'',
+          phone_code:''
         },
         // es6,验证表单变量，光标失去时，验证输入信息
         rules: {
@@ -107,27 +123,64 @@ export default {
             ],
             user_phone: [
                 { validator: check_user_phone }
+            ],
+            phone_code:[
+                { validator: validate_check_phone_code }
             ]
         },
         computedTime:0,
+        dis:true,
       };
     },
     computed: {
         // 判断手机号码
         rightPhoneNumber:function(){
-            return /^1(3|4|5|6|7|8|9)\d{9}$/.test(this.ruleForm.user_phone);
+            if(/^1(3|4|5|6|7|8|9)\d{9}$/.test(this.ruleForm.user_phone)){
+                this.dis=false;
+                return true;
+            }else{
+                this.dis=true;
+                return false;
+            };
+            
         }
     },
     methods: {
+        // 消息提示弹框
+        open(msg) {
+            MessageBox({
+                title: '提示',
+                message: msg
+            });
+        },
       submitForm(formName) {
-        console.log(123)
-        // console.log(valid)
-        console.log( this.$refs[formName])
+        let that=this;
         // 对整个表单进行校验,表单验证结果只有true或false
-        this.$refs[formName].validate((valid) => {
+        that.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log(valid)
-            // 向服务器发出注册请求,注册成功以后跳转到登录页面
+            console.log(this)
+        
+            //1、 向服务器发出注册请求
+            try{
+                that.$store.dispatch('toRegister',{
+                    user_name:that.ruleForm.user_name,
+                    user_password:that.ruleForm.user_password,
+                    user_email:that.ruleForm.user_email,
+                    user_phone:that.ruleForm.user_phone,
+                    phone_code:that.ruleForm.phone_code,
+                }).then(res=>{
+                    console.log(12343)
+                    console.log(res.data.msg)
+                    // if(res.data.code===0){
+                        this.$options.methods.open(res.data.msg)
+                    // }
+                    
+                })
+            }catch(err){
+                console.log("注册失败")
+                console.log(err)
+            }
+            // 2、注册成功以后跳转到登录页面
             this.$emit("listenRegisterEvent",valid)
           } else {
             console.log('error submit!!');
@@ -151,6 +204,16 @@ export default {
                     }
                 },1000)
                 // 向后端发送请求，获取验证码
+                const user_phone=this.ruleForm.user_phone
+                phoneCode(user_phone).then(res=>{
+                    console.log(res.data)
+                    if(res.data.msg){
+                        this.$options.methods.open("手机验证码已发送")
+                    }else{
+                        this.$options.methods.open("手机验证码发送失败")
+                    }
+                    
+                })
             }
         }
     }
@@ -189,3 +252,30 @@ export default {
         &.right_phone_number
             color #000
 </style>
+
+<style>
+     .el-message-box__wrapper {
+        position: fixed;
+        top: 40% !important;
+        left: 6% !important;
+        text-align: center;
+        width: 300px !important;
+    }
+    .el-message-box {
+        display: inline-block;
+        width: 320px !important ;
+        padding-bottom: 10px;
+        vertical-align: middle;
+        background-color: #FFF;
+        border-radius: 4px;
+        border: 1px solid #EBEEF5;
+        font-size: 18px;
+        -webkit-box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+        box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+        text-align: left;
+        overflow: hidden;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+</style>
+

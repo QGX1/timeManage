@@ -9,28 +9,20 @@ const md5 = require('blueimp-md5')
 class ToolsService extends Service {
 //   产生一次性图形验证码
     async captcha() {
-    const captcha=svgCaptcha.create({
-        size:4,
-        fontSize:50,
-        width:100,
-        height:40,
-        ignoreChars: '0o1l',
-        noise: 2,
-        color: true,
-        background:'#eee'
-    });
-    this.ctx.session.code={
-      verify:captcha.text.toLowerCase()
-    }//将验证码写入服务端缓存
-    // this.ctx.session.maxAge = 1000 * 60 * 10;//设置过期时间
-    let getCode={
-      captcha,
-      sessionCode:this.ctx.session.code
-    } 
-    // console.log(3333)
-    // console.log(getCode);
-    // console.log(this.ctx.session.code)
-    return getCode;
+      const captcha=svgCaptcha.create({
+          size:4,
+          fontSize:50,
+          width:100,
+          height:40,
+          ignoreChars: '0o1l',
+          noise: 2,
+          color: true,
+          background:'#eee'
+      });
+      this.ctx.session.code=captcha.text.toLowerCase()
+      //将验证码写入服务端缓存
+      // this.ctx.session.maxAge = 1000 * 60 * 10;//设置过期时间
+    return captcha;
   }
 
   /* 

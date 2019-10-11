@@ -19,7 +19,8 @@ export let instance = Axios.create({
          },
          //baseURL: process.env.NODE_ENV === 'production' ? 'http://sayhub.me/api' : 'http://localhost:7001'
          // baseURL:'http://127.0.0.1:7001',
-         baseURL: "http://172.16.221.16:7001/"
+         baseURL: "http://10.75.18.245:7001/"
+        //  baseURL: "http://192.168.10.55:7001/"
        });
 
 // respone 路由响应拦截器
@@ -66,13 +67,14 @@ export const getUserInfo = () => {
 }
 
 // 注册（丘桂娴）
-export const register = ({ registerUser, registerPassword,registerEmail }) => {
+export const register = ({ user_name, user_password,user_email ,user_phone,phone_code}) => {
   let data = {
-      "username": registerUser,
-      "password": registerPassword,
-      "email":registerEmail
+    'user_name':user_name,
+    'user_password':user_password,
+    'user_email':user_email,
+    'user_phone':user_phone,
+    'phone_code':phone_code,
   }
-  // console.log(data+"丘桂娴");
   console.log(Qs.stringify(data)+"数据传递");
   
   return instance({
@@ -82,6 +84,21 @@ export const register = ({ registerUser, registerPassword,registerEmail }) => {
   });
 
 }
+
+// 手机验证码
+export const phoneCode=(user_phone) =>{
+  let data={
+    'user_phone':user_phone
+  }
+  console.log("手机验证码");
+  console.log(user_phone)
+  return instance({
+    method: 'post',
+	  url: '/api/phoneCode',
+	  data: Qs.stringify(data)
+  });
+}
+
 
 //邮箱数据传递给后端，请求处理
 export const checkEmail = ({ checkEmail }) => {
@@ -102,16 +119,6 @@ export const checkEmail = ({ checkEmail }) => {
 
 
 //编辑管理员信息数据传给后端，请求处理（黄昌壹）
-export const EditAdminInfo = ({ formInfo }) => {
-  let data = {
-    formInfo: formInfo
-  };
-  return instance({
-    method: "post",
-    url: "/api/doEditAdminInfo",
-    data: Qs.stringify(data)
-  });
-};
 
 //编辑用户信息数据传给后端，请求处理（黄昌壹）
 export const EditUserInfo = ({ formInfo }) => {

@@ -58,6 +58,7 @@ export default {
                     font-weight bold 
                     color #02a774   
                     text-align center
+                    margin-bottom 0px
                 .login_hearder_title
                     padding-top 10%
                     text-align center      

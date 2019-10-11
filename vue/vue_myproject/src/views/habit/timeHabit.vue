@@ -1,5 +1,8 @@
 <template>
     <div class="container">
+      <span class="gobackHabit" @click="gobackHabit">
+        <i class="iconfont icon-houtui"></i>
+      </span>
         <div id="app">
             <div class="study">开始学习</div>
             <div class="timer">
@@ -43,7 +46,19 @@ export default {
         totalPomodoro: 4
       }
   },
+  mounted(){
+    let that=this;
+    that.getData();
+  },
   methods: {
+    // 获取路径携带的参数
+    getData(){
+      console.log(this.$router.currentRoute.query.habitDate.index.habit_title)
+    },
+    // 返回前一页
+    gobackHabit(){
+      this.$router.go(-1)
+    },
     startTimer: function() {
       this.timer = setInterval(() => this.countdown(), 1000); //1000ms = 1 second
       this.resetButton = true;
@@ -150,4 +165,16 @@ export default {
         }
     }
     }
+</style>
+
+<style lang="stylus" scoped>
+  .gobackHabit
+    color #eeeeee;
+    color: #eee;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    .icon-houtui
+      font-size 40px
+
 </style>
