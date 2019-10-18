@@ -91,18 +91,18 @@ export default {
     return new Promise((resolve, reject) => {
       getUserInfo()
         .then(res => {
-          console.log("检测进入home页面的图书数据（丘桂娴）");
-          // console.log(res.data.lists);
-          if (res.status === 200) {
-            // commit(types.USERINFO, res.data);
+          if (res.status === 200) { 
             console.log("全局变量");
-            console.log(info);
+            console.log(info.info.user_id);
             commit(types.USERINFO, {
-              user_id: info.user_id,
-              email: info.email
+              user_id: info.info.user_id,
+              user_email: info.info.email,
+              user_name:info.info.user_name
             });
           }
-          resolve(res);
+          console.log(1333)
+          console.log(this.$store)
+          resolve(types.USERINFO);
         })
         .catch(error => {
           reject(error);
@@ -111,6 +111,7 @@ export default {
   },
 // 退出登录（丘桂娴）
   logOut({ commit }) {
+    console.log("登出")
     return new Promise((resolve, reject) => {
       commit(types.USERINFO, null);
       commit(types.LOGINSTATUS, false);

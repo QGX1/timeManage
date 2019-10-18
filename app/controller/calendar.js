@@ -19,17 +19,29 @@ class CalendarController extends Controller {
   */
   async add() {
     const {ctx}=this;
+    let ca_daylong=0;
+    console.log(typeof(ctx.request.body.ca_daylong))
+    if(ctx.request.body.ca_daylong=="true"){
+      ca_daylong=1
+    }else{
+      ca_daylong=0
+    }
+    console.log(12212)
+   
+    console.log(ca_daylong)
     let calendarInfo={
         user_id:ctx.request.body.user_id,
         ca_title:ctx.request.body.ca_title,
-        ca_size:ctx.request.body.ca_size,
-        ca_daylong:ctx.request.body.ca_daylong,
+        ca_site:ctx.request.body.ca_site,
+        ca_daylong:ca_daylong,
         ca_can_delete:ctx.request.body.ca_can_delete,
         ca_begin_time:ctx.request.body.ca_begin_time,
         ca_end_time:ctx.request.body.ca_end_time,
-        ca_remind:ctx.request.body.ca_remind
+        ca_color:ctx.request.body.ca_color
     }
+    console.log("新增日程数据")
     console.log(calendarInfo)
+    
     let addCalendar=await this.service.calendar.addCalendar(calendarInfo)
 
     if(addCalendar.length!=0){
@@ -52,16 +64,18 @@ class CalendarController extends Controller {
    let calendarInfo={
       ca_id:ctx.request.body.ca_id,
       ca_title:ctx.request.body.ca_title,
-      ca_size:ctx.request.body.ca_size,
+      ca_site:ctx.request.body.ca_site,
       ca_daylong:ctx.request.body.ca_daylong,
       ca_can_delete:ctx.request.body.ca_can_delete,
       ca_begin_time:ctx.request.body.ca_begin_time,
       ca_end_time:ctx.request.body.ca_end_time,
-      ca_remind:ctx.request.body.ca_remind
+      ca_color:ctx.request.body.ca_color
    };
+   console.log("更新数据")
    console.log(calendarInfo)
    let modifyCalendar=await this.service.calendar.modifyCalendar(calendarInfo);
-  //  console.log(modifyHabit[0])
+   console.log(11111)
+   console.log(modifyCalendar)
    if(modifyCalendar[0]!=0){
     return ctx.body={
       code:0,
@@ -70,7 +84,7 @@ class CalendarController extends Controller {
    }else{
     return ctx.body={
       code:1,
-      msg:"数据不存在"
+      msg:"修改失败"
    }
   }
 };

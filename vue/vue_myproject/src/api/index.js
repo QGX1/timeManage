@@ -19,8 +19,10 @@ export let instance = Axios.create({
          },
          //baseURL: process.env.NODE_ENV === 'production' ? 'http://sayhub.me/api' : 'http://localhost:7001'
          // baseURL:'http://127.0.0.1:7001',
-         baseURL: "http://10.75.18.245:7001/"
-        //  baseURL: "http://192.168.10.55:7001/"
+        //  baseURL: "http://10.75.18.245:7001/"
+          baseURL: "http://192.168.10.55:7001/"
+        // baseURL:"http://172.16.221.16:7001/"
+        //baseURL:'http://172.16.81.28:7001'
        });
 
 // respone 路由响应拦截器
@@ -34,7 +36,6 @@ instance.interceptors.response.use(
         path: '*'
       })
       vuex.commit(types.ERRORSTATUS,error.response.status);
-      // console.log(error.response.status+"丘桂娴333")
     }
     // 返回接口错误信息
     return Promise.reject(error.response)
@@ -115,92 +116,197 @@ export const checkEmail = ({ checkEmail }) => {
 
 }
 
-
-
-
-//编辑管理员信息数据传给后端，请求处理（黄昌壹）
-
-//编辑用户信息数据传给后端，请求处理（黄昌壹）
-export const EditUserInfo = ({ formInfo }) => {
+// 新增习惯养成数据
+export const addHabit=({user_id,habit_title,habit_time,habit_img})=>{
   let data = {
-    formInfo: formInfo
-  };
+    'user_id':user_id,
+    'habit_title':habit_title,
+    'habit_time':habit_time,
+    'habit_img':habit_img
+  }
+  console.log(Qs.stringify(data)+"习惯养成");
+
   return instance({
-    method: "post",
-    url: "/api/doEditUserInfo",
+    method: 'post',
+    url: '/habit/add',
     data: Qs.stringify(data)
   });
-};
+}
 
-//向后端请求管理员信息（黄昌壹)
-export const adminInfo = () => {
-  return instance.post("/api/getAdminInfo", {});
-};
+// 获取该用户全部的习惯养成数据
+export const getHabit=(user_id)=>{
 
-//向后端请求用户信息（黄昌壹)
-export const UsersInfo = () => {
-  return instance.post("/api/getUsersInfo", {});
-};
-
-
-//管理员登录数据传给后端，请求处理(黄昌壹)
-export const adminlogin = ({ adminLoginUser, adminLoginPassword }) => {
-  let data = {
-    adminUser: adminLoginUser,
-    adminPassword: adminLoginPassword
-  };
-  console.log(Qs.stringify(data) + "这是管理员登录信息");
   return instance({
-    method: "post",
-    url: "/api/adminlogin",
+    method: 'get',
+      url: '/habit/findall/'+user_id,
+      // data: Qs.stringify(data)
+  });
+}
+// 删除习惯养成
+
+export const deleHabit=(habit_id)=>{
+
+  return instance({
+    method: 'delete',
+      url: '/habit/delete/'+habit_id,
+  });
+}
+
+// 获取单条习惯养成数据
+export const oneHabit=(habit_id)=>{
+
+  return instance({
+    method: 'get',
+    url: '/habit/findone/'+habit_id,
+  });
+}
+
+// 修改用户习惯养成时间
+export const uploadHabit=({habit_id,habit_title,habit_time,habit_img})=>{
+  let data = {
+    'habit_id':habit_id,
+    'habit_title':habit_title,
+    'habit_time':habit_time,
+    'habit_img':habit_img
+  }
+  console.log(Qs.stringify(data)+"数据传递");
+  return instance({
+    method: 'put',
+    url: '/habit/update/',
     data: Qs.stringify(data)
   });
-};
+}
 
-//增加管理员信息数据传给后端，请求处理（黄昌壹）
-export const AddAdmin=({formInfo})=>{
-  let data={
-    formInfo:formInfo,
+// 新增日程表单数据
+export const addCalendar=({
+  user_id,
+  ca_title,
+  ca_size,
+  ca_daylong,
+  ca_begin_time,
+  ca_end_time,
+  ca_color,
+  ca_can_delete})=>{
+  let data = {
+    'user_id':user_id,
+    'ca_title':ca_title,
+    'ca_size':ca_size,
+    'ca_daylong':ca_daylong,
+    'ca_begin_time':ca_begin_time,
+    'ca_end_time':ca_end_time,
+    'ca_color':ca_color,
+    'ca_can_delete':ca_can_delete
   }
+  console.log(Qs.stringify(data)+"日程");
+
   return instance({
-    method: "post",
-    url: "/api/doAddAdmin",
-    data:Qs.stringify(data),
+    method: 'post',
+    url: '/calendar/add',
+    data: Qs.stringify(data)
   });
 }
 
-//增加用户信息数据传给后端，请求处理（黄昌壹）
-export const AddUser=({formInfo})=>{
-  let data={
-    formInfo:formInfo,
-  }
+// 获取该用户全部的日程表单数据
+export const getCalendar=(user_id)=>{
+
   return instance({
-    method: "post",
-    url: "/api/doAddUser",
-    data:Qs.stringify(data),
+    method: 'get',
+      url: '/calendar/findall/'+user_id,
+      // data: Qs.stringify(data)
   });
 }
 
-//删除管理员信息数据传给后端，请求处理（黄昌壹）
-export const DeleteAdmin=({formInfo})=>{
-  let data={
-    formInfo:formInfo,
-  }
+//查看当前日程详情
+export const detailCalendar=(ca_id)=>{
+
   return instance({
-    method: "post",
-    url: "/api/doDeleteAdmin",
-    data:Qs.stringify(data),
+    method: 'get',
+      url: '/calendar/findone/'+ca_id,
+      // data: Qs.stringify(data)
   });
 }
 
-//删除用户信息数据传给后端，请求处理（黄昌壹）
-export const DeleteUser=({formInfo})=>{
-  let data={
-    formInfo:formInfo,
-  }
+// 修改用户日程
+export const uploadCalendar=({
+  ca_id,
+  ca_title,
+  ca_site,
+  ca_daylong,
+  ca_begin_time,
+  ca_end_time,
+  ca_color,
+  ca_can_delete})=>{
+  let data = {
+    ca_id,
+    ca_title,
+    ca_site,
+    ca_daylong,
+    ca_begin_time,
+    ca_end_time,
+    ca_color,
+    ca_can_delete
+    }
+  console.log(Qs.stringify(data)+"数据传递");
   return instance({
-    method: "post",
-    url: "/api/doDeleteUser",
-    data:Qs.stringify(data),
+    method: 'put',
+    url: '/calendar/update',
+    data: Qs.stringify(data)
+  });
+}
+
+// 删除日程
+export const deleteCalendar=(ca_id)=>{
+
+  return instance({
+    method: 'delete',
+      url: '/calendar/delete/'+ca_id,
+  });
+}
+
+// 获取用户某天的总结数据
+export const getSum=({user_id,sum_time})=>{
+  console.log(111)
+  console.log(user_id)
+  console.log(sum_time)
+  return instance({
+    method: 'get',
+      url: '/sum/aSum/'+user_id+'/'+sum_time,
+  });
+}
+
+// 新增总结数据
+export const addSum=({user_id,sum_content,sum_time})=>{
+  let data = {
+    user_id,
+    sum_content,
+    sum_time
+  }
+  console.log(Qs.stringify(data)+"总结数据");
+
+  return instance({
+    method: 'post',
+    url: '/sum/addSum',
+    data: Qs.stringify(data)
+  });
+}
+// 删除总结日记
+export const deleteSum=(sum_id)=>{
+
+  return instance({
+    method: 'delete',
+    url: '/sum/deleteSum/'+sum_id,
+  });
+}
+// 修改总结
+
+export const uploadSum=({sum_id,sum_content})=>{
+  let data = {
+    sum_id,
+  }
+  console.log(Qs.stringify(data)+"数据传递");
+  return instance({
+    method: 'put',
+    url: '/sum/updateSum',
+    data: Qs.stringify(data)
   });
 }

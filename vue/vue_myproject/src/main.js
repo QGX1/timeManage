@@ -14,6 +14,7 @@ import axios from 'axios'
 import Vuex from 'vuex';
 import moment from 'moment'
 import $ from 'jquery'
+import './assets/iconfont2/iconfont.css'
 Vue.use(Vuex);
 Vue.prototype.$axios = axios
 Vue.prototype.$qs = qs;

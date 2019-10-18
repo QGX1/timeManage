@@ -61,9 +61,10 @@ class SelectSumService extends Service {
     /* 查询单条数据 */
     async aSum(sumInfo){
         const {ctx}=this
-        let aSum=await ctx.app.model.Sum.findOne({
+        let aSum=await ctx.app.model.Sum.findAll({
             where:{
-                sum_id:sumInfo
+                user_id:sumInfo.user_id,
+                sum_time:sumInfo.sum_time
             }
         })
         console.log("查询单条数据");

@@ -2,8 +2,9 @@ import Vue from "vue";
 import Router from "vue-router";
 import store from "../store/index";
 import error from "../components/error.vue";
-import login1 from "@/views/admin/login"
+import login from "@/views/admin/login"
 import Calendar from "@/views/calendar/index"
+import detailCalendar from "@/views/calendar/detailCalendar"
 import Habit from "@/views/habit/index"
 import timeHabit from "@/views/habit/timeHabit"
 import Count from "@/views/count/index"
@@ -17,12 +18,12 @@ const router = new Router({
   routes: [
     {
       path: "/",
-      name: "login1",
-      component: login1,
+      name: "login",
+      component: login,
       beforeEnter: (to, from, next) => {
         let token = window.sessionStorage.getItem("token");
         if (token) {
-          next("/home");
+          next("/calendar");
         } else {
           next();
         }
@@ -32,214 +33,50 @@ const router = new Router({
       path:'/calendar',
       component:Calendar,
       meta:{
-          showFooter:true
+          showFooter:true,
+          requiresAuth:true
       }
     },
     {
       path:'/habit',
       component:Habit,
       meta:{
-          showFooter:true
+          showFooter:true,
+          // requiresAuth:true
       }
     },
     {
       path:'/count',
       component:Count,
       meta:{
-          showFooter:true
+          showFooter:true,
+          // requiresAuth:true
       }
     },
     {
       path:'/sum',
       component:Sum,
       meta:{
-          showFooter:true
+          showFooter:true,
+          // requiresAuth:true
       }
     },
     {
       path:'/timeHabit',
       component:timeHabit,
       meta:{
-          showFooter:false
+          showFooter:false,
+          // requiresAuth:true
       }
     },
-    // {
-    //   path: "/home",
-    //   name: "主页",
-    //   components: {
-    //     header,
-    //     home,
-    //     tab
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    //   // 需要登录才能访问
-    // },
-    // {
-    //   path: "/note",
-    //   name: "note",
-    //   components: {
-    //     note,
-    //     tab
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
-    // {
-    //   path: "/mine",
-    //   name: "mine",
-    //   components: {
-    //     mine,
-    //     tab
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    
-    // },
-    // {
-    //   path: "/register",
-    //   name: "register",
-    //   components: {
-    //     register
-    //   },
-    //   beforeEnter: (to, from, next) => {
-    //     let token = window.sessionStorage.getItem("token");
-    //     if (token) {
-    //       console.log("丘桂娴" + token);
-    //       next("/home");
-    //     } else {
-    //       next();
-    //     }
-    //   }
-    // },
-
-    // {
-    //   path: "/search",
-    //   name: "search",
-    //   components: {
-    //     search
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
-    // {
-    //   path: "/more",
-    //   name: "more",
-    //   components: {
-    //     more
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
-    // {
-    //   path: "/detail/:id",
-    //   name: "detail",
-    //   components: {
-    //     detail
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
-    // //6月9日加
-
-    // {
-    //   path: "/todo",
-    //   name: "todo",
-    //   components: {
-    //     todo
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
-    // {
-    //   path: "/write",
-    //   name: "write",
-    //   components: {
-    //     write
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
-    // {
-    //   path: "/notes/:id",
-    //   name: "notes",
-    //   components: {
-    //     notes
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
-    // {
-    //   path: "/collect",
-    //   name: "collect",
-    //   components: {
-    //     collect
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
-
-    // {
-    //   path: "/about",
-    //   name: "about",
-    //   components: {
-    //     about
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
-    // {
-    //   path: "/edit",
-    //   name: "edit",
-    //   components: {
-    //     edit
-    //   },
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
-    // {
-    //   path: "/adminlogin",
-    //   name: "adminlogin",
-    //   component: adminlogin
-    // },
-    // {
-    //   path: "/admin",
-    //   name: "admin",
-    //   components: {
-    //     admin,
-    //     user1,
-    //   },
-    //   redirect: "/user1",
-    //   children: [
-    //     {
-    //       path: "/user1",
-    //       name: "user1",
-    //       component: user1
-    //     },
-    //     {
-    //       path: "/user2",
-    //       name: "user2",
-    //       component: user2
-    //     }
-    //   ],
-    //   meta: {
-    //     requiresAuth: true
-    //   }
-    // },
-
-    // /////////////
+    {
+      path:'/detailCalendar',
+      component:detailCalendar,
+      meta:{
+          showFooter:false,
+          // requiresAuth:true
+      }
+    },
     {
       path: "/error",
       name: "error",

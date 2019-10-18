@@ -12,7 +12,7 @@
 
     <div class="guide_item" @click="goto('/habit')" :class="{on:isCurrent('/habit')}">
       <span class="item_icon">
-        <i class="iconfont icon-5"></i>
+        <i class="iconfont icon-icon-test"></i>
       </span>
       <span>习惯</span>
     </div>

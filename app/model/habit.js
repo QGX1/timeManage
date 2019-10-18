@@ -27,6 +27,11 @@ module.exports = app => {
           allowNull:false,
           comments:"养成时间"
         },
+        habit_img:{
+          type:STRING,
+          allowNull:false,
+          comments:"背景图片"
+        },
         updated_at: {
             type: DATE,
             defaultValue: NOW(),

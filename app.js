@@ -11,7 +11,7 @@
   
 // } = require("./init/data");
 
- module.exports = app => {
+//  module.exports = app => {
 //   app.beforeStart(async () => {
 //     // The application will wait for this function to complete before starting
 //     await app.model.sync({ force: true }); //生成数据库模型（实例化）
@@ -24,5 +24,5 @@
 //     console.log("插入数据成功");
 //   });
 
-};
+// };
 

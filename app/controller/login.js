@@ -46,8 +46,9 @@ class LoginController extends Controller {
         }
         // 查询用户信息是否存在
         let userInfo = await this.service.adminLogin.login(info);
-        // console.log(userInfo)
+        
         if (userInfo.length) {
+          let info=userInfo[0];
           /*
           把用户信息加密成 token 
           */
@@ -66,6 +67,7 @@ class LoginController extends Controller {
           ctx.body = {
             code: 0,
             token: token,
+            info
           };
           ctx.status = 200; // 状态码 200
       } else {

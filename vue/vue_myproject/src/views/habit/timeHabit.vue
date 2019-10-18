@@ -1,10 +1,16 @@
 <template>
-    <div class="container">
+    <div class="container" 
+       v-bind:style="{ 
+              'background-image': 'url(' + habit_img + ')',
+              'background-repeat':'no-repeat',
+              'background-size':'cover' }"  
+    >
       <span class="gobackHabit" @click="gobackHabit">
         <i class="iconfont icon-houtui"></i>
       </span>
         <div id="app">
-            <div class="study">开始学习</div>
+
+            <div class="study">{{study}}</div>
             <div class="timer">
                 <span class="minute">{{ minutes }}</span>
                 <span>:</span>
@@ -33,17 +39,23 @@
     </div>
 </template>
 <script>
+import {oneHabit} from '../../api/index.js'
+import { Notification } from 'element-ui'
+import {uploadHabit} from '../../api/index.js'
 export default {
   data() {
       return{
         timer: null,
-        totalTime: (25 * 60),
-        resetButton: false,
+        totalTime:'',
+        resetButton: true,
         title: "Countdown to rest time!",
         edit: false,
         userTime: 25,
         diameter: 200,
-        totalPomodoro: 4
+        totalPomodoro: 4,
+        study:'',
+        habit_img:'',
+        habit_id:0
       }
   },
   mounted(){
@@ -51,16 +63,45 @@ export default {
     that.getData();
   },
   methods: {
-    // 获取路径携带的参数
+    // 完成消息提醒框
+    notify(){
+      Notification ({
+         title: 'Info',
+          message: '已完成',
+          showClose: false,
+          type:'success',
+          position:'bottom-left',
+          offset: 100
+      })
+    },
+    // 获取习惯详情
     getData(){
-      console.log(this.$router.currentRoute.query.habitDate.index.habit_title)
+      console.log(this.$router.currentRoute.query.index)
+      let habit_id=this.$router.currentRoute.query.index;
+      oneHabit(habit_id).then(res=>{
+        console.log(res)
+        this.totalTime=res.data.aHabit.habit_time*60;
+        this.study=res.data.aHabit.habit_title;
+        this.userTime=res.data.aHabit.habit_time;
+        this.habit_img=res.data.aHabit.habit_img;
+        this.habit_id=res.data.aHabit.habit_id;
+      })
     },
     // 返回前一页
     gobackHabit(){
       this.$router.go(-1)
+      // this.$options.methods.notify()
+      
     },
     startTimer: function() {
-      this.timer = setInterval(() => this.countdown(), 1000); //1000ms = 1 second
+     this.timer = setInterval(() => {
+       this.countdown()
+       if((this.minutes==0)&&(this.seconds==0)){
+          clearInterval(this.timer)
+          this.$options.methods.notify();
+          this.timer=null
+        }
+       }, 1000)
       this.resetButton = true;
       this.edit = false;
     },
@@ -73,7 +114,20 @@ export default {
       this.totalTime = (this.userTime * 60);
       clearInterval(this.timer);
       this.timer = null;
-      this.resetButton = false;
+      this.resetButton = true;
+      console.log('修改用户输入的时间')
+      let uploadHabitDate={
+          habit_id:this.habit_id,
+          habit_title:this.study,
+          habit_time:this.userTime,
+          habit_img:this.habit_img
+      }    
+      console.log(uploadHabitDate)
+      uploadHabit(uploadHabitDate).then((res)=>{
+        console.log(res)
+      }
+
+      )
     },
     editTimer: function() {
       this.edit = !this.edit;
@@ -92,8 +146,15 @@ export default {
     },
     seconds: function() {
       const seconds = this.totalTime - (this.minutes * 60);
+      console.log(12212121)
+      console.log(seconds)
+      console.log(this.minutes)
       return this.padTime(seconds);
     }
+  },
+  // 数据监听
+  watch:{
+   
   }
 }
 </script>
@@ -121,7 +182,7 @@ export default {
             display: flex; 
             flex-direction: column;
             align-items: center;
-            background-color: #222831;
+            background-color: #2d22680a;
             height: auto;
             & > * {
             margin-bottom: 2rem;

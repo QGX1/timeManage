@@ -7,6 +7,14 @@ class CalendarService extends Service {
     async selectCalendar(calendarInfo) {
         const {ctx}=this;
         let selectsCalendar=await ctx.app.model.Calendar.findAll({
+            attributes: [
+                ['ca_id','id'],
+                ['ca_title', 'title'],
+                ['ca_begin_time','start'],
+                ['ca_end_time','end'],
+                ['ca_color','color'],
+                ['ca_daylong','allDay']
+            ],
             where:{
                 user_id:calendarInfo
             }
@@ -21,12 +29,12 @@ class CalendarService extends Service {
     let updateCalendar=await ctx.app.model.Calendar.update(
         {
             ca_title:calendarInfo.ca_title,
-            ca_size:calendarInfo.ca_size,
+            ca_site:calendarInfo.ca_site,
             ca_daylong:calendarInfo.ca_daylong,
             ca_can_delete:calendarInfo.ca_can_delete,
             ca_begin_time:calendarInfo.ca_begin_time,
             ca_end_time:calendarInfo.ca_end_time,
-            ca_remind:calendarInfo.ca_remind
+            ca_color:calendarInfo.ca_color
         },
         {
             where:{
@@ -34,8 +42,8 @@ class CalendarService extends Service {
             }
         }
     )
-    // console.log("修改");
-    // console.log(updateHabit)
+    console.log("修改");
+    console.log(calendarInfo.ca_site)
     return updateCalendar;
   };
 
@@ -57,12 +65,12 @@ class CalendarService extends Service {
     let addCalendar=await ctx.app.model.Calendar.create({
         user_id:calendarInfo.user_id,
         ca_title:calendarInfo.ca_title,
-        ca_size:calendarInfo.ca_size,
+        ca_site:calendarInfo.ca_site,
         ca_daylong:calendarInfo.ca_daylong,
         ca_can_delete:calendarInfo.ca_can_delete,
         ca_begin_time:calendarInfo.ca_begin_time,
         ca_end_time:calendarInfo.ca_end_time,
-        ca_remind:calendarInfo.ca_remind
+        ca_color:calendarInfo.ca_color
     })
     
     return addCalendar

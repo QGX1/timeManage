@@ -22,7 +22,7 @@ module.exports = app => {
   router.get("/sum/:user_id",app.controller.sum.selectSum)//查询所有总结
   router.post("/sum/addSum",controller.sum.addSum)//增加总结
   router.delete("/sum/deleteSum/:sum_id",controller.sum.deleteSum)//删除总结
-  router.get("/sum/aSum/:sum_id",controller.sum.aSum)//查询某条总结详情
+  router.get("/sum/aSum/:user_id/:sum_time",controller.sum.aSum)//查询某条总结详情
   router.put('/sum/updateSum',controller.sum.modifySum)//更新数据
 
   /* 
@@ -32,7 +32,7 @@ module.exports = app => {
  router.post("/habit/add",controller.habit.add)//增加
  router.delete("/habit/delete/:habit_id",controller.habit.delete)//删除
  router.get("/habit/findone/:habit_id",controller.habit.findOne)//查询某条详情
- router.put('/habit/update',controller.habit.update)//更新数据
+ router.put('/habit/update/',controller.habit.update)//更新数据
 
  /* 
   清单集操作

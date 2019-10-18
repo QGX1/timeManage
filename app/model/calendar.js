@@ -18,7 +18,7 @@ module.exports = app => {
             }
         },
         ca_title: {
-          type: STRING(50),
+          type: STRING,
           allowNull: false,
           comments:"日程标题"
         },
@@ -49,10 +49,15 @@ module.exports = app => {
           allowNull:true,
           comments:"日程结束时间"
         },
-        ca_remind:{
-          type:DATE,
+        // ca_remind:{
+        //   type:DATE,
+        //   allowNull:true,
+        //   comments:"日程提醒时间"
+        // },
+        ca_color:{
+          type:STRING,
           allowNull:true,
-          comments:"日程提醒时间"
+          comments:"日程背景色"
         },
         updated_at: {
             type: DATE,

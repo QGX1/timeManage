@@ -20,9 +20,10 @@
                 </section>
                 <section class="login_message">
                     <el-input type="text" maxlength="11" placeholder="验证码" v-model="captcha"></el-input>
-                    <!-- <img ref="captcha" class="get_verification" src="http://192.168.10.55:7001/api/verify" @click="getCaptchaCode"> -->
-                    <img ref="captcha" class="get_verification" src="http://10.75.18.245:7001/api/verify" @click="getCaptchaCode">
-
+                    <img ref="captcha" class="get_verification" src="http://192.168.10.55:7001/api/verify" @click="getCaptchaCode">
+                    <!-- <img ref="captcha" class="get_verification" src="http://10.75.18.245:7001/api/verify" @click="getCaptchaCode"> -->
+                    <!-- <img ref="captcha" class="get_verification" src="http://172.16.221.16:7001/api/verify" @click="getCaptchaCode"> -->
+                    <!-- <img ref="captcha" class="get_verification" src=" http://10.75.18.7:7001/api/verify" @click="getCaptchaCode"> -->
                 </section>
             </div>
             <input type="submit" value="登录" class="login_submit">
@@ -55,32 +56,47 @@ export default {
           this.showPassword=!this.showPassword  
         },
         login(){
+            let that=this;
             // 登录成功后跳转到主页面
             try{
-
-                this.$store
-                // 发送登录请求
-                    .dispatch("toLogin",{
-                        user_email:this.user_email,
-                        user_password:this.user_password,
-                        captcha:this.captcha
+                 // 发送登录请求
+                that.$store.dispatch("toLogin",{
+                        user_email:that.user_email,
+                        user_password:that.user_password,
+                        captcha:that.captcha
                     })
                     // 请求成功
                     .then(res=>{
                         console.log(res)
                         if(res.data.code===1){
-                            this.$options.methods.open(res.data.msg)
-                        }
-                    })
+                            that.$options.methods.open(res.data.msg)
+                        }                   
+                        // 存储用户信息到状态管理
+                        that.$store.dispatch('getUser',{
+                            info:res.data.info
+                        })
+                        // 路由跳转到首页
+                        .then((res)=>{
+                            console.log(res)
+                            let redirectUrl = decodeURIComponent(that.$route.query.redirect || '/calendar');
+                            // 跳转到指定的路由
+                            that.$router.push({
+                                path: redirectUrl
+                            })
+                        })
+                })
+                
             }catch(err){
                 console.log(err)
             }
         },
         // 点击获取验证码
         getCaptchaCode(){
-            // this.$refs.captcha.src='http://192.168.10.55:7001/api/verify?time='+new Date();
-            this.$refs.captcha.src=' http://10.75.18.245:7001/api/verify?time='+new Date();           
-           // console.log(this)
+            this.$refs.captcha.src='http://192.168.10.55:7001/api/verify?time='+new Date();
+            // this.$refs.captcha.src=' http://10.75.18.245:7001/api/verify?time='+new Date();           
+            // this.$refs.captcha.src=' http://172.16.221.16:7001/api/verify?time='+new Date();           
+            //  this.$refs.captcha.src='http://10.75.18.7:7001/api/verify?time='+new Date();
+            // console.log(this)
         }
 
     },

@@ -9,7 +9,10 @@ class HabitService extends Service {
         let selectsHabit=await ctx.app.model.Habit.findAll({
             where:{
                 user_id:habitInfo
-            }
+            },
+            'order': [
+               [ 'habit_id','DESC']//倒序输出
+            ]
         })
         console.log("查询");
         // console.log(selectsSum)
@@ -52,7 +55,8 @@ class HabitService extends Service {
     let addHabit=await ctx.app.model.Habit.create({
         user_id:habitInfo.user_id,
         habit_title:habitInfo.habit_title,
-        habit_time:habitInfo.habit_time
+        habit_time:habitInfo.habit_time,
+        habit_img:habitInfo.habit_img
     })
     
     return addHabit

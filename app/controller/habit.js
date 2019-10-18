@@ -8,6 +8,8 @@ class HabitController extends Controller {
     async findAll() {
         const {ctx}=this;
         let user_id=ctx.params.user_id;
+        console.log(user_id)
+        console.log("查询数据")
         let SelectHabit=await this.service.habit.selectsHabit(user_id);
         // let habitSelect=habitSum[0].dataValues;
         return ctx.body={
@@ -23,7 +25,8 @@ class HabitController extends Controller {
     let habitInfo={
         user_id:ctx.request.body.user_id,
         habit_title:ctx.request.body.habit_title,
-        habit_time:ctx.request.body.habit_time
+        habit_time:ctx.request.body.habit_time,
+        habit_img:ctx.request.body.habit_img
     }
     console.log(ctx.request.body)
     let addHabit=await this.service.habit.addHabit(habitInfo)
@@ -48,11 +51,12 @@ class HabitController extends Controller {
    let habitInfo={
        habit_id:ctx.request.body.habit_id,
        habit_title:ctx.request.body.habit_title,
-       habit_time:ctx.request.body.habit_time
+       habit_time:ctx.request.body.habit_time,
+       habit_img:ctx.request.body.habit_img
    };
+   console.log("修改数据")
    console.log(habitInfo)
    let modifyHabit=await this.service.habit.modifyHabit(habitInfo);
-  //  console.log(modifyHabit[0])
    if(modifyHabit[0]!=0){
     return ctx.body={
       code:0,
@@ -74,6 +78,8 @@ class HabitController extends Controller {
  async delete() {
     const {ctx}=this;
     let habit_id=ctx.params.habit_id;
+    console.log('删除习惯')
+    console.log(habit_id)
     let deleteHabit=await this.service.habit.deleteHabit(habit_id);
     return ctx.body={
         code:0,
@@ -92,7 +98,7 @@ class HabitController extends Controller {
         return ctx.body={
             code:0,
             msg:"查找成功",
-            sumdata:aHabit
+            aHabit:aHabit
         }
     }else{
         return ctx.body={

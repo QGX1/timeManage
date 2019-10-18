@@ -84,8 +84,15 @@ class SumController extends Controller {
   */
  async aSum() {
     const {ctx}=this;
-    let sum_id=ctx.params.sum_id
-    let aSum=await this.service.selectSum.aSum(sum_id)
+    let user_id=ctx.params.user_id
+    let sum_time=ctx.params.sum_time
+    let sumInfo={
+      user_id,
+      sum_time
+    }
+    console.log(1111)
+    console.log(sumInfo)
+    let aSum=await this.service.selectSum.aSum(sumInfo)
     if(aSum){
         return ctx.body={
             code:0,

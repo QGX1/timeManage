@@ -4,8 +4,8 @@
             <router-link slot="left" to="/search" class="header_search">
                 <i class="iconfont icon-icon_xinyong_xianxing_jijin-"></i>
             </router-link>
-            <span slot="right" class="hearder_login">
-                <span class="hearder_login_text">登录|注册</span>
+            <span slot="right" class="hearder_login" @click="exit">
+                <span class="hearder_login_text">退出登录</span>
             </span>
         </HeaderTop>
          <div class="block" >
@@ -55,44 +55,17 @@
           :buttonText="buttonText"
           @dateClick="handleDateClick"
           @eventClick="handleEventClick"
-          :events="[
-            {
-              title: '计算机学院小组会议',
-              start: '2019-10-03 10:00:00',
-              end: '2019-10-03 16:00:00',
-              color:'orange'
-            },
-            {
-            start: '2019-10-03 10:00:00',
-              end: '2019-10-03 16:00:00',
-              title: '东南大学计算机学术会议',
-              color:'green'
-            },
-            {
-            start: '2019-10-03 11:00:00',
-              end: '2019-10-03 16:00:00',
-              title: '不要再浪费时间了',
-              color:'green'
-            },
-            {
-              start: '2019-10-03 11:00:00',
-              end: '2019-10-04 16:00:00',
-              title: '不要再浪费时间了11111',
-              color:'green'
-            },
-            {
-            start: '2019-10-03 11:00:00',
-              end: '2019-10-03 18:00:00',
-              title: '不要再浪费时间了2222',
-              color:'green'
-            },
-          ]"
+          :events="calendarDataList"
           
         />
       <addCalendar v-show="showAddCalendar" 
       @listenAddCalendarEvent='showAdd'
       :selectTime='selectTime'
       ></addCalendar>
+      <!-- <detailCalendar v-show="showDetailCalendar" 
+        @listenDetailCalendarEvent='showDetail'
+        :calendarInfo='calendarInfo'
+      ></detailCalendar> -->
       <!-- <Calendar></Calendar> -->
     </div>
   
@@ -110,14 +83,16 @@ import momentPlugin from '@fullcalendar/moment'
 import moment from "moment"
 import interactionPlugin from '@fullcalendar/interaction'
 import HeaderTop from '../../components/HeaderTop'
-import Calendar from '../../components/calendar/index'
+// import Calendar from '../../components/calendar/index'
 import addCalendar from '../../components/calendar/addCalendar'
+// import detailCalendar from '../../components/calendar/detailCalendar'
+import {getCalendar} from '../../api/index.js'
 export default {
   components: {
     FullCalendar, // make the <FullCalendar> tag available
     HeaderTop,
     addCalendar,
-    Calendar
+    // detailCalendar
   },
   data() {
      return {
@@ -144,21 +119,25 @@ export default {
           day: '天',
           list:'列表'
           },
-      // calendarDayNames:['星期一','星期二','星期三','星期四','星期五','星期六','星期日']  
+      calendarDataList:[],
       showAddCalendar:false,
+      ca_id:0,
       gotoDay:'',
-      selectTime:''
+      selectTime:'',
+      user_id:this.$store.state.users.userInfo.user_id,
+      calendarInfo:{}
     }
   },
   methods: {
-     // 当点击时候
-    // handleDateClick(arg) {
-    //   console.log(arg)
-    // },
-    // 当选择结束的时候获取开始和结束时间
-    // handleSelect(info) {
-    //   console.log('form' + info.startStr + ' to ' + info.endStr)
-    // },
+    // 登出
+    exit(){
+      console.log("退出登录")
+      this.$store.dispatch('logOut')
+        // console.log(res)
+        this.$router.push({
+          path:'/'
+      })
+    },
     getCalendarEvents(info, successCallback, failureCallback){
       let events=[
         ...this.calendarEvents,
@@ -169,35 +148,64 @@ export default {
       ]
       successCallback(events)
     },
+    // 点击日程事件显示详情
      handleEventClick (info) {
-      alert('Event: ' + info.event.title)
+      // this.showDetailCalendar=true;
+      this.ca_id=info.event.id;
+      console.log("传递数据")
+      console.log(this.ca_id)
+      this.$router.push({
+        path:'/detailCalendar',
+        query:{
+          ca_id:this.ca_id
+        }
+      })
     },
     toggleWeekends() {
       this.calendarWeekends = !this.calendarWeekends // update a property
     },
     // 跳转到选择的日期
     gotoPast() {
-      // console.log(1111)
-      // console.log(this.gotoDay)
       let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
       calendarApi.gotoDate(this.gotoDay) // call a method on the Calendar object
     },
+    // 点击显示添加日程数据组件
     handleDateClick(arg) {
       this.showAddCalendar=true;
       var time=moment(arg.date).format("YYYY-MM-DD hh:mm:ss");
       this.selectTime=time;
-      console.log(this.selectTime);
+      // console.log(this.selectTime);
     },
+    // 控制添加组件的显示
     showAdd(data){
-      console.log(data);
+      // console.log(data);
       this.showAddCalendar=false;
-      console.log(this.showAddCalendar)
+      // console.log(this.showAddCalendar)
     },
+    // // 控制查看详情组件的显示
+    //  showDetail(data){
+    //   // console.log(data);
+    //   this.showDetailCalendar=false;
+    //   // console.log(this.showDetailCalendar)
+    // },
     showColose(data){
       console.log(data);
       this.showAddCalendar=false;
+    },
+    // 获取数据
+    getCalendarData(){
+      getCalendar(this.user_id).then(res=>{
+        console.log("日程数据")
+        console.log(res)
+        this.calendarDataList=res.data.SelectCalendar;
+        console.log(this.calendarDataList) 
+      })
     }
-  }
+  },
+  // 页面加载添加数据
+  mounted() {
+    this.getCalendarData();    
+  },
 }
 
 </script>
@@ -213,12 +221,16 @@ export default {
     .demo-app-calendar {
         margin: 0 auto;
         max-width: 900px;
-       
+        overflow-y: hidden;
+        height: 600px;
     }
     .fc-view-container{
       
       height: 500px ;
     }
+</style>
+<style>
+
 </style>
 
 <style lang="stylus" scoped>
@@ -229,7 +241,7 @@ export default {
           // position absolute
           float left
       .block
-        margin-top: 50px;
+        margin-top: 110px;
         position: absolute;
         margin-left: 118px;
       .el-date-editor.el-input, .el-date-editor.el-input__inner

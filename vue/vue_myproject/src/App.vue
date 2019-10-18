@@ -1,6 +1,6 @@
 <template>
-  <div id="app"  v-if="isRouterAlive">
-    <router-view/>
+  <div id="app"  >
+    <router-view v-if="isRouterAlive"/>
     <FooterGuide v-show="$route.meta.showFooter"/>
   </div>
 </template>
@@ -33,14 +33,15 @@ html,body,#app{
 <script>
 import FooterGuide from './components/FooterGuide'
 export default {
-  components:{
-        FooterGuide
-    },
+  name:'app',
   provide() {
     return {
       reload: this.reload
     };
   },
+  components:{
+        FooterGuide
+    },
   data() {
     return {
       isRouterAlive: true
