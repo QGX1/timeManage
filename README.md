@@ -31,3 +31,5 @@ $ npm stop
 
 
 [egg]: https://eggjs.org
+
+![image](https://github.com/QGX1/timeManage/blob/dev/vue/vue_myproject/src/assets/gifhome_1920x1080_79s.gif)
