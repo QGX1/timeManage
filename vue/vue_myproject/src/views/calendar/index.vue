@@ -1,11 +1,9 @@
 <template>
-    <div>
+    <div id="calendar">
         <HeaderTop title="日程" >
-            <router-link slot="left" to="/search" class="header_search">
-                <i class="iconfont icon-icon_xinyong_xianxing_jijin-"></i>
-            </router-link>
             <span slot="right" class="hearder_login" @click="exit">
-                <span class="hearder_login_text">退出登录</span>
+                <i class="iconfont icon-dianyuan "></i>
+                <span class="hearder_login_text">登出</span>              
             </span>
         </HeaderTop>
          <div class="block" >
@@ -50,7 +48,7 @@
           slot-duration="00:30"
           slot-label-format="HH:mm"
           title-format="YYYY年MM月D日"
-          defaultView="timeGridWeek"
+          defaultView="dayGridMonth"
           locale="zh-cn"
           :buttonText="buttonText"
           @dateClick="handleDateClick"
@@ -62,11 +60,6 @@
       @listenAddCalendarEvent='showAdd'
       :selectTime='selectTime'
       ></addCalendar>
-      <!-- <detailCalendar v-show="showDetailCalendar" 
-        @listenDetailCalendarEvent='showDetail'
-        :calendarInfo='calendarInfo'
-      ></detailCalendar> -->
-      <!-- <Calendar></Calendar> -->
     </div>
   
 </template>
@@ -83,11 +76,13 @@ import momentPlugin from '@fullcalendar/moment'
 import moment from "moment"
 import interactionPlugin from '@fullcalendar/interaction'
 import HeaderTop from '../../components/HeaderTop'
-// import Calendar from '../../components/calendar/index'
 import addCalendar from '../../components/calendar/addCalendar'
-// import detailCalendar from '../../components/calendar/detailCalendar'
 import {getCalendar} from '../../api/index.js'
+import {MessageBox,Loading} from 'element-ui'
+import { showLoading, hideLoading } from '../../api/loading';
 export default {
+  name:'calendar',
+  inject:['reload'],//注入reload方法
   components: {
     FullCalendar, // make the <FullCalendar> tag available
     HeaderTop,
@@ -119,7 +114,7 @@ export default {
           day: '天',
           list:'列表'
           },
-      calendarDataList:[],
+       calendarDataList:[],
       showAddCalendar:false,
       ca_id:0,
       gotoDay:'',
@@ -129,6 +124,18 @@ export default {
     }
   },
   methods: {
+    // 加载状态
+        toLoading(){
+             const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+                });
+                setTimeout(() => {
+                loading.close();
+                }, 2000);
+        },
     // 登出
     exit(){
       console.log("退出登录")
@@ -178,33 +185,30 @@ export default {
     },
     // 控制添加组件的显示
     showAdd(data){
-      // console.log(data);
       this.showAddCalendar=false;
-      // console.log(this.showAddCalendar)
+      this.$options.methods.getCalendarData();  
+      this.reload()
     },
-    // // 控制查看详情组件的显示
-    //  showDetail(data){
-    //   // console.log(data);
-    //   this.showDetailCalendar=false;
-    //   // console.log(this.showDetailCalendar)
-    // },
     showColose(data){
       console.log(data);
       this.showAddCalendar=false;
     },
     // 获取数据
     getCalendarData(){
+      showLoading()
       getCalendar(this.user_id).then(res=>{
-        console.log("日程数据")
-        console.log(res)
+        hideLoading();
+        console.log(1111)
+        console.log(res.data)
         this.calendarDataList=res.data.SelectCalendar;
-        console.log(this.calendarDataList) 
+ 
       })
     }
   },
   // 页面加载添加数据
   mounted() {
-    this.getCalendarData();    
+    this.getCalendarData();   
+    // this.toLoading() 
   },
 }
 
@@ -234,6 +238,8 @@ export default {
 </style>
 
 <style lang="stylus" scoped>
+      .icon-dianyuan
+        color red
       .icon-icon_xinyong_xianxing_jijin-
           font-size: 30px;
           margin-top 0px
@@ -254,7 +260,7 @@ export default {
           
       .hearder_login
           right 10px
-          top 15px
+          top 12px
           position absolute
           z-index 100
       .swiper-container 

@@ -9,7 +9,10 @@ class SelectSumService extends Service {
         let selectsSum=await ctx.app.model.Sum.findAll({
             where:{
                 user_id:sumInfo
-            }
+            },
+            'order': [
+                [ 'sum_id','DESC']//倒序输出
+             ]
         })
         console.log("查询");
         // console.log(selectsSum)

@@ -8,6 +8,7 @@ import detailCalendar from "@/views/calendar/detailCalendar"
 import Habit from "@/views/habit/index"
 import timeHabit from "@/views/habit/timeHabit"
 import Count from "@/views/count/index"
+import DetailList from "@/views/count/addCount"
 import Sum from "@/views/sum/index"
 
 Vue.use(Router);
@@ -42,7 +43,7 @@ const router = new Router({
       component:Habit,
       meta:{
           showFooter:true,
-          // requiresAuth:true
+          requiresAuth:true
       }
     },
     {
@@ -54,11 +55,19 @@ const router = new Router({
       }
     },
     {
+      path:'/detailList',
+      component:DetailList,
+      meta:{
+          // showFooter:true,
+          // requiresAuth:true
+      }
+    },
+    {
       path:'/sum',
       component:Sum,
       meta:{
           showFooter:true,
-          // requiresAuth:true
+          requiresAuth:true
       }
     },
     {
@@ -66,7 +75,7 @@ const router = new Router({
       component:timeHabit,
       meta:{
           showFooter:false,
-          // requiresAuth:true
+          requiresAuth:true
       }
     },
     {
@@ -74,7 +83,7 @@ const router = new Router({
       component:detailCalendar,
       meta:{
           showFooter:false,
-          // requiresAuth:true
+          requiresAuth:true
       }
     },
     {

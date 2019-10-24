@@ -135,10 +135,10 @@ export default {
                     // 1、请求数据库，存入数据
                     addHabit(addHabitDate).then(res=>{           
                         this.$options.methods.open(res.data.msg)
+                        this.$refs[formName].resetFields();//清空数据
+                        this.$emit("listenAddHabitEvent",valid);  
                     })
-                    // 2、存储成功后，清空数据
-                    this.$refs[formName].resetFields();//清空数据
-                    this.$emit("listenAddHabitEvent",valid);  
+                    // 2、存储成功后，清空数据                  
                 } else {
                     console.log('error submit!!');
                     return false;

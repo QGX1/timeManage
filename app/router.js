@@ -15,6 +15,7 @@ module.exports = app => {
   router.get('/api/verify',app.controller.login.verify);//获取图形验证码
   router.post('/api/phoneCode',app.controller.code.phoneCode);//手机发送验证码
   router.post("/api/register", controller.code.register);//用户注册
+  router.post("/api/uploadImg", controller.moni.uploadImg);//上传图片
   //   router.post("/api/checkEmail", controller.checkEmail.index);
   /* 
     总结操作

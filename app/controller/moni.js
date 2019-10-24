@@ -64,7 +64,7 @@ class MoniController extends Controller {
     const ctx=this.ctx;
     
     const stream = await ctx.getFileStream();
-    console.log(stream.fields);
+    console.log(stream);
     // 文件名:随机数+时间戳+原文件后缀
     // path.extname(stream.filename).toLocaleLowerCase()为后缀名（.jpg,.png等）
     const filename = Math.random().toString(36).substr(2) + new Date().getTime() + path.extname(stream.filename).toLocaleLowerCase();

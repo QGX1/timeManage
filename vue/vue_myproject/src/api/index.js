@@ -18,11 +18,7 @@ export let instance = Axios.create({
            "content-type": "application/x-www-form-urlencoded"
          },
          //baseURL: process.env.NODE_ENV === 'production' ? 'http://sayhub.me/api' : 'http://localhost:7001'
-         // baseURL:'http://127.0.0.1:7001',
-        //  baseURL: "http://10.75.18.245:7001/"
-          baseURL: "http://192.168.10.55:7001/"
-        // baseURL:"http://172.16.221.16:7001/"
-        //baseURL:'http://172.16.81.28:7001'
+          baseURL: " http://172.16.221.16:7001/"
        });
 
 // respone 路由响应拦截器
@@ -116,6 +112,15 @@ export const checkEmail = ({ checkEmail }) => {
 
 }
 
+// 上传图片
+export const uploadSumImg=(Formdata)=>{
+  console.log(Formdata)
+  return instance({
+    method:'post',
+    url:'/api/uploadImg',
+    data:Qs.stringify(Formdata)
+  })
+};
 // 新增习惯养成数据
 export const addHabit=({user_id,habit_title,habit_time,habit_img})=>{
   let data = {
@@ -154,7 +159,6 @@ export const deleHabit=(habit_id)=>{
 
 // 获取单条习惯养成数据
 export const oneHabit=(habit_id)=>{
-
   return instance({
     method: 'get',
     url: '/habit/findone/'+habit_id,
@@ -181,7 +185,7 @@ export const uploadHabit=({habit_id,habit_title,habit_time,habit_img})=>{
 export const addCalendar=({
   user_id,
   ca_title,
-  ca_size,
+  ca_site,
   ca_daylong,
   ca_begin_time,
   ca_end_time,
@@ -190,7 +194,7 @@ export const addCalendar=({
   let data = {
     'user_id':user_id,
     'ca_title':ca_title,
-    'ca_size':ca_size,
+    'ca_site':ca_site,
     'ca_daylong':ca_daylong,
     'ca_begin_time':ca_begin_time,
     'ca_end_time':ca_end_time,
@@ -208,7 +212,6 @@ export const addCalendar=({
 
 // 获取该用户全部的日程表单数据
 export const getCalendar=(user_id)=>{
-
   return instance({
     method: 'get',
       url: '/calendar/findall/'+user_id,
@@ -302,6 +305,7 @@ export const deleteSum=(sum_id)=>{
 export const uploadSum=({sum_id,sum_content})=>{
   let data = {
     sum_id,
+    sum_content
   }
   console.log(Qs.stringify(data)+"数据传递");
   return instance({

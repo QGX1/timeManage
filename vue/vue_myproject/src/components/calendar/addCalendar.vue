@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="addCalendar">
         <el-dialog title="添加日程" :visible.sync="dialogFormVisible" width='98%' top='10vh' @close="closeAdd">
             <el-form :model="ruleForm" :rules="rules"  ref="ruleForm" >
                 <el-form-item label="日程" :label-width="formLabelWidth" prop="ca_title" required>
@@ -72,6 +72,8 @@ import {addCalendar} from '../../api/index.js'
 import {MessageBox,Loading} from 'element-ui'
 export default {
     props:['selectTime'],
+     name:'addCalendar',
+    inject:['reload'],//注入reload方法
     data() {
         return {
             user_id:this.$store.state.users.userInfo.user_id,
@@ -110,7 +112,7 @@ export default {
           },
         },
     mounted() {
-        this.toLoading()
+        
     },
        
     methods: {
@@ -121,21 +123,7 @@ export default {
                 message: msg
             });
         },
-        changeShowDay(){
-            console.log(111);
-        },
-        // 加载状态
-        toLoading(){
-             const loading = this.$loading({
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-                background: 'rgba(0, 0, 0, 0.7)'
-                });
-                setTimeout(() => {
-                loading.close();
-                }, 2000);
-        },
+        
         // 时间比较
         compareTime(star,end){
             var date= new Date();
@@ -165,10 +153,13 @@ export default {
                     addCalendar(this.ruleForm).then(res=>{
                         console.log(res);
                         this.$options.methods.open(res.data.msg);
+                        // 2、存储成功后，清空数据
+                        this.$refs[formName].resetFields();//清空数据
+                        this.$emit("listenAddCalendarEvent",valid); 
+                        // this. reload()
                     })
-                    // 2、存储成功后，清空数据
-                    this.$refs[formName].resetFields();//清空数据
-                    this.$emit("listenAddCalendarEvent",valid);    
+                    
+                   
                 }else{
                     this.$message({
                         showClose: true,

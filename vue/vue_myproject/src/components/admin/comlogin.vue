@@ -20,10 +20,7 @@
                 </section>
                 <section class="login_message">
                     <el-input type="text" maxlength="11" placeholder="验证码" v-model="captcha"></el-input>
-                    <img ref="captcha" class="get_verification" src="http://192.168.10.55:7001/api/verify" @click="getCaptchaCode">
-                    <!-- <img ref="captcha" class="get_verification" src="http://10.75.18.245:7001/api/verify" @click="getCaptchaCode"> -->
-                    <!-- <img ref="captcha" class="get_verification" src="http://172.16.221.16:7001/api/verify" @click="getCaptchaCode"> -->
-                    <!-- <img ref="captcha" class="get_verification" src=" http://10.75.18.7:7001/api/verify" @click="getCaptchaCode"> -->
+                    <img ref="captcha" class="get_verification" src=" http://172.16.221.16:7001/api/verify" @click="getCaptchaCode">
                 </section>
             </div>
             <input type="submit" value="登录" class="login_submit">
@@ -92,11 +89,7 @@ export default {
         },
         // 点击获取验证码
         getCaptchaCode(){
-            this.$refs.captcha.src='http://192.168.10.55:7001/api/verify?time='+new Date();
-            // this.$refs.captcha.src=' http://10.75.18.245:7001/api/verify?time='+new Date();           
-            // this.$refs.captcha.src=' http://172.16.221.16:7001/api/verify?time='+new Date();           
-            //  this.$refs.captcha.src='http://10.75.18.7:7001/api/verify?time='+new Date();
-            // console.log(this)
+            this.$refs.captcha.src=' http://172.16.221.16:7001/api/verify?time='+new Date();
         }
 
     },

@@ -39,6 +39,7 @@
 import HeaderTop from '../../components/HeaderTop'
 import addHabit from '../../components/habit/addHabit'
 import {getHabit,deleHabit} from '../../api/index.js'
+import { showLoading, hideLoading } from '../../api/loading';
 export default {
   components: {
     HeaderTop,
@@ -82,11 +83,13 @@ export default {
     // 显示添加日程组件
     addhabit(){
       console.log(this.showAddHabit)
-      this.showAddHabit=true
+      this.showAddHabit=true;
     },
     showAdd(obj){
       console.log(obj)
-      this.showAddHabit=!obj
+      this.showAddHabit=!obj;
+      this.$options.methods.getHabitList();  
+       this.reload()
     },
     habitDetail(e){
       // 当前索引
@@ -106,6 +109,7 @@ export default {
         console.log(res)
         if(res.data.code===0){
           this.reload()
+          //  this.$options.methods.getHabitList();  
         }
       })
       
@@ -114,6 +118,7 @@ export default {
     getHabitList(){
       console.log('重新加载数据')
       getHabit(this.user_id).then(res=>{
+        console.log(res.data)
       if(res.data.SelectHabit.length!=0){
         this.habitList=[...res.data.SelectHabit];
       }
@@ -124,7 +129,9 @@ export default {
   mounted(){
     console.log("获取用户数据")
     console.log(this.user_id)
+    showLoading();
     getHabit(this.user_id).then(res=>{
+      hideLoading();
       if(res.data.SelectHabit.length!=0){
         this.habitList=[...res.data.SelectHabit]
       }

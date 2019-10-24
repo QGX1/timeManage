@@ -38,8 +38,8 @@
    <div class="content">
      <div v-for="(item,index) in sumdata" :key="index" class="text item">
         <el-card class="box-card">
-          <textarea class="sumConton" @blur.prevent="changeCount" :data-index="item.sum_id">
-            {{item.sum_content}}
+          <textarea class="sumConton" @blur.prevent="changeCount(item)" :data-index="item" v-model="item.sum_content">
+
           </textarea >
           <span class="sumDelete" @click="sumDelete" :data-index="item.sum_id">
             <i class="iconfont icon-shanchu1"></i>
@@ -62,6 +62,7 @@
 <script>
 import {getSum,addSum,deleteSum,uploadSum} from '../../api/index.js'
 import moment from "moment"
+import { showLoading, hideLoading } from '../../api/loading';
 export default {
   name: 'sum',
   inject:['reload'],//注入reload方法
@@ -75,7 +76,7 @@ export default {
       color1:'color1',
       fontIcon1:'iconfont icontaiyang-copy',
       fontIcon2:'iconfont iconxiaolian',
-      value1:new Date(),//时间
+      value1:'',//时间
       sum_content:"点击编辑你今天的总结",
       sumdata:[],
       dialogTableVisible: false,
@@ -90,11 +91,11 @@ export default {
 
   methods:{
     // 修改数据
-    changeCount(e){
-      console.log()
+    changeCount(item){
+      console.log(item)
       let sumInfo={
-        sum_id:e.currentTarget.dataset.index,
-        sum_content:this.sum_content
+        sum_id:item.sum_id,
+        sum_content:item.sum_content
       }
       uploadSum(sumInfo).then(res=>{
         console.log(res)
@@ -103,9 +104,11 @@ export default {
     // 删除
     sumDelete(e){
       let sum_id=e.currentTarget.dataset.index;
+      let sum_time=this.value1;
       deleteSum(sum_id).then(res=>{
         console.log(res);
-        this.reload()
+        this.getSumData();
+        this.value1=sum_time
       })
     },
     // 增加
@@ -117,8 +120,9 @@ export default {
       }
       addSum(sumInfo).then(res=>{
         console.log(res);
-        this.value1=sumInfo.sum_time
-        this.reload()       
+        this.value1=sumInfo.sum_time;
+        this.getSumData();
+        // this.reload()       
       })
     },
     openNew:function(){
@@ -152,14 +156,17 @@ export default {
         user_id:this.user_id,
         sum_time:moment(this.value1).format("YYYY-MM-DD")
       }
+      showLoading();
       getSum(sumInfo).then((res)=>{
         console.log(res)
         this.sumdata=res.data.sumdata
+        hideLoading();
       })
     }
   },
   // 页面初始化时请求数据
   mounted() {
+    this.value1=new Date()
     this.getSumData();
   },
   // 监听数据变化,发送新的请求
@@ -172,7 +179,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .content{
   width: 100%;
     height: 600px;
