@@ -34,7 +34,7 @@ $ npm stop
 ### 项目描述
 - 技术栈：
     - (前端)vuex、vue-cli 、vue-routertoken、axios、elementUI、fullcalendar、番茄计时
-    - （后端）eggjs、sequlize、md5、jwt、fs、stream-wormhole
+    - （后端）eggjs、sequlize、md5、jwt、fs、stream-wormhole、restful风格接口请求
     - （数据库）mysql
 - 项目描述：
     - 1、本次项目采用前后端分离，用户登陆服务器校验完成后返回token值，用户携带token进行页面的访问。token限制接口的访问，无登录获取token，不可访问接口。保证了接口和数据的安全性。
