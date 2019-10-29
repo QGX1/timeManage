@@ -1,5 +1,3 @@
-// app/service/tool.js
-// 发送邮箱配置（丘桂娴）
 "use strict";
 
 const Service = require("egg").Service;

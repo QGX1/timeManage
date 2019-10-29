@@ -1,4 +1,3 @@
-// 用户头像、图片上传本地（丘桂娴）
 'use strict';
 
 const Controller = require('egg').Controller;

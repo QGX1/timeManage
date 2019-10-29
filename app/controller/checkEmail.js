@@ -1,4 +1,4 @@
-// 验证是否为本站用户，发送邮箱（丘桂娴）
+// 验证是否为本站用户，发送邮箱
 'use strict';
 
 const Controller = require('egg').Controller;

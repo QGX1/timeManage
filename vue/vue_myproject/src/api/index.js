@@ -63,7 +63,7 @@ export const getUserInfo = () => {
   
 }
 
-// 注册（丘桂娴）
+// 注册
 export const register = ({ user_name, user_password,user_email ,user_phone,phone_code}) => {
   let data = {
     'user_name':user_name,

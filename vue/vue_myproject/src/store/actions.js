@@ -44,7 +44,7 @@ export default {
     });
   },
 
-  // 注册，修改登录状态（丘桂娴）
+  // 注册，修改登录状态
   toRegister({ commit }, info) {
     return new Promise((resolve, reject) => {
       register(info)
@@ -71,7 +71,7 @@ export default {
     });
   },
 
-  // 邮箱检测后台请求以及响应前端处理（丘桂娴）
+  // 邮箱检测后台请求以及响应前端处理
   tocheckEmail({ commit }, info) {
     return new Promise((resolve, reject) => {
       checkEmail(info)
@@ -109,7 +109,7 @@ export default {
         });
     });
   },
-// 退出登录（丘桂娴）
+// 退出登录
   logOut({ commit }) {
     console.log("登出")
     return new Promise((resolve, reject) => {

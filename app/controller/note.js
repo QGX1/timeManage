@@ -1,4 +1,3 @@
-// 笔记：查看、增加、删除（丘桂娴）
 'use strict';
 
 const Controller = require('egg').Controller;

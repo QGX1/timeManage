@@ -1,4 +1,3 @@
-// 用户登录（丘桂娴）
 "use strict";
 
 const Controller = require("egg").Controller;
