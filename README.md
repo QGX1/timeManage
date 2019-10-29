@@ -49,3 +49,11 @@ $ npm stop
 
 ### 页面演示效果
 ![image](https://github.com/QGX1/timeManage/blob/dev/vue/vue_myproject/src/assets/gifhome.gif)
+### 图片演示效果
+![image](https://github.com/QGX1/timeManage/blob/dev/vue/vue_myproject/src/assets/最终效果/p1.jpg)
+![image](https://github.com/QGX1/timeManage/blob/dev/vue/vue_myproject/src/assets/最终效果/p2.jpg)
+![image](https://github.com/QGX1/timeManage/blob/dev/vue/vue_myproject/src/assets/最终效果/p3.jpg)
+![image](https://github.com/QGX1/timeManage/blob/dev/vue/vue_myproject/src/assets/最终效果/p4.jpg)
+![image](https://github.com/QGX1/timeManage/blob/dev/vue/vue_myproject/src/assets/最终效果/p5.jpg)
+![image](https://github.com/QGX1/timeManage/blob/dev/vue/vue_myproject/src/assets/最终效果/p6.png)
+![image](https://github.com/QGX1/timeManage/blob/dev/vue/vue_myproject/src/assets/最终效果/p7.jpg)
